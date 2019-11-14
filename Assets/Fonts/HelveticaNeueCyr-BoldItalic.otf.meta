@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 2e3385e57d17e0a4691a7583e506053f
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: HelveticaNeueCyr
+  fontNames:
+  - HelveticaNeueCyr
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 05b0deb08ac6c784d98f76bb7f71c533, type: 3}
+  - {fileID: 12800000, guid: 029fa859f6bebcd45993f00816c9e63a, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
