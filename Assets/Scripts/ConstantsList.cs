@@ -13,6 +13,11 @@ public class ConstantsList : MonoBehaviour
     public const string keyWin = "Win";
     public const string keyGetBoost = "CountLose";
 
+    //feedback
+    //public const string feedback = "marina.develop@gmail.com";
+    public const string feedback = "ichishka97@gmail.com";
+
+
 
     // tutorial
     public const string keyTutorial = "tutorial";
