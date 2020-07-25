@@ -52,30 +52,27 @@ public class DirectionGun : MonoBehaviour
 
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision) // когда выходит из объекта задает максимальный цвет
     {
         //Debug.Log(collision.gameObject.name);
-        if (collision.tag == "AimArrow" && transform.localPosition.x >= collision.gameObject.transform.localPosition.x)
+        if (collision.tag == "AimArrow" && transform.localPosition.x >= collision.gameObject.transform.localPosition.x) // когда джостик вышел за предел указателя вправо активирует его работу
         {
-            collision.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
-            //Debug.Log("Color");
-        }
+            collision.gameObject.GetComponent<Animator>().enabled = true;
+               }
         else
-            if (transform.localPosition.x <= collision.gameObject.transform.localPosition.x)
+            if (transform.localPosition.x <= collision.gameObject.transform.localPosition.x) // джостик ушел влево - скрытие ячейки указателя 
         {
+            collision.gameObject.GetComponent<Animator>().enabled = false;
             collision.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
         }
-        //if(collision.name == "limit1" || collision.name == "L1" || collision.name == "FieldEnemy")
-        //{
-        //    collision.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
-        //    Debug.Log(collision.gameObject.name);
-        //}
+       
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision) // when arrowTrigger is over arrowDirection
     {
         if (transform.localPosition.x <= collision.gameObject.transform.localPosition.x)
         {
+            collision.gameObject.GetComponent<Animator>().enabled = false;
             collision.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
         }
     }
@@ -125,33 +122,49 @@ public class DirectionGun : MonoBehaviour
         //count = 1;
     }
 
-    /* пропущены ли стрелки и если да, то закрасить */
+    /* пропущены ли стрелки и если да, то закрасить/активировать анимацию */
     void ColorMissedArrow()
     {
         for (int i = 1; i < quantity; i++)
         {
-            //Debug.Log(dirrection[i]);
-                if (dirrection[i-1].GetComponent<SpriteRenderer>().color.a == 0 && dirrection[i].GetComponent<SpriteRenderer>().color.a > 0)
+
+        
+            if (dirrection[i - 1].GetComponent<SpriteRenderer>().color.a == 0 && dirrection[i].GetComponent<SpriteRenderer>().color.a > 0) // включение анимации
                 {
                     dirrection[i-1].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+                    dirrection[i - 1].GetComponent<Animator>().enabled = true;
                 }
-            
         }
-        if (dirrection[quantity-1].transform.position.x <= transform.position.x && arrowPlayer.activeSelf == false)
+        if (dirrection[quantity-1].transform.position.x <= transform.position.x && arrowPlayer.activeSelf == false) 
         {
             for (int i = 0; i < quantity; i++)
             {
                 dirrection[i].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+                dirrection[i].GetComponent<Animator>().enabled = true;
             }
+            
         }
+        ////отключение анимации в случае пропуска
+        //for(int i = quantity-1; i > 0; i--)
+        //{
+           
+        //    if (dirrection[i-1].GetComponent<SpriteRenderer>().color.a == 0 && dirrection[i].GetComponent<SpriteRenderer>().color.a > 0)
+        //    {
+        //        dirrection[i].GetComponent<Animator>().enabled = false;
+        //        dirrection[i].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+        //    }
+        //}
+
     }
 
+    // убирает все стрелки направления при нахождении пальца на базе
     void ColorDrop()
     {
         if (dirrection[1].transform.position.x >= transform.position.x)
         {
             for (int i = 0; i < quantity; i++)
             {
+                dirrection[i].GetComponent<Animator>().enabled = false;
                 dirrection[i].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
             }
         }

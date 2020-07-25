@@ -1,6 +1,6 @@
 ﻿/*Wall
- */ 
-
+ */
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +16,7 @@ public class CreateWall : MonoBehaviour
     public Slider sliderBorder;
 
     [SerializeField] GameObject limitOne;
-
+    [SerializeField] GameObject borderExample;
 
     //public Observer Field;
     //// public GameObject ReadyWall;
@@ -58,7 +58,8 @@ public class CreateWall : MonoBehaviour
 
     float fieldLength;
 
-   
+    // length into boreder
+    private float lengthBorderForBuild;
 
     private void Start()
     {
@@ -68,8 +69,18 @@ public class CreateWall : MonoBehaviour
         borders = new GameObject[maxCountBorder];
         fieldLength = PlayerPrefs.GetFloat(nameTag);
         sliderBorder.value = 1;
+        CalculationSizeBorder();
     }
 
+    // получение исходных данных для правильной расстановки стен
+    void CalculationSizeBorder()
+    {
+        var top = borderExample.transform.Find("top: 1").transform.position;
+        var center = borderExample.transform.Find("center: 1").transform.position;
+        lengthBorderForBuild = Vector2.Distance(top, center) + limitOne.GetComponent<BoxCollider2D>().bounds.size.y;
+        borderExample.SetActive(false);
+
+    }
 
     void PositionOnBoard()
     {
@@ -84,11 +95,11 @@ public class CreateWall : MonoBehaviour
             //Debug.Log(posTap);
             //Debug.Log(distance);
 
-            if (distanceML < distance)
-            {
-                Debug.Log(distance - distanceML+distance/2);
+            //if (distanceML < distance)
+            //{
+            //    Debug.Log(distance - distanceML+distance/2);
 
-            }
+            //}
         }
         
        
@@ -192,7 +203,16 @@ public class CreateWall : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                startPos = pos; // начальная позиция 
+
+                startPos = pos; // начальная позиция
+
+                if (Math.Abs(startPos.y-limitOne.transform.position.y) < lengthBorderForBuild)
+                {
+
+                    startPos = new Vector2(startPos.x, startPos.y- lengthBorderForBuild);
+                    Debug.Log(lengthBorderForBuild);
+                    Debug.Log(Math.Abs(startPos.y - limitOne.transform.position.y));
+                }
                 CreateReadyWall();
                 
             }
@@ -236,6 +256,7 @@ public class CreateWall : MonoBehaviour
         check = true;
         countTowers++;
         GameObject folder = new GameObject("wall: "+countTowers);
+        folder.transform.position = startPos;
         folder.layer = 8;
         folder.tag = "Player";
 
@@ -243,8 +264,9 @@ public class CreateWall : MonoBehaviour
         {
             top = Instantiate(TopBorder, folder.transform) as GameObject;
             deltaLength = top.GetComponent<BoxCollider2D>().bounds.size.y / 2;
-            top.transform.position = new Vector2(startPos.x, startPos.y + deltaLength);
-            top.layer = 8;
+            //top.transform.position = new Vector2(startPos.x, startPos.y + deltaLength);
+            top.transform.localPosition = new Vector2(0,  deltaLength);
+            top.layer = 8; 
             top.tag = "Field";
             top.name = "top: " + countTowers;
         }
@@ -254,7 +276,8 @@ public class CreateWall : MonoBehaviour
         {
             center = Instantiate(centerBorder, folder.transform) as GameObject;
             var length = center.transform.Find("Border").GetComponent<BoxCollider2D>().bounds.size.y / 2;
-            center.transform.position = new Vector3(startPos.x, startPos.y - length, .1f);
+            //center.transform.position = new Vector3(startPos.x, startPos.y - length, .1f);
+            center.transform.localPosition = new Vector3(0, - length, .1f);
             center.layer = 8;
             center.tag = "Player";
             center.name = "center: " + countTowers;
@@ -270,11 +293,14 @@ public class CreateWall : MonoBehaviour
             bottom.tag = "Field";
             bottom.name = "bottom: " + countTowers;
         }
-       
-        bottom.transform.position = new Vector2(startPos.x, startPos.y-deltaLength);
+
+        //bottom.transform.position = new Vector2(startPos.x, startPos.y-deltaLength);
+        bottom.transform.localPosition = new Vector2(0, - deltaLength);
         distance = Vector2.Distance(top.transform.position, bottom.transform.position);
         startDistance = distance;
-        
+        //Debug.Log(center.transform.position);
+        //Debug.Log(limitOne.transform.position);
+
     }
 
     
