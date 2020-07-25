@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using UnityEngine;
 
 public class EditingBattlefield : MonoBehaviour
@@ -50,9 +50,9 @@ public class EditingBattlefield : MonoBehaviour
      
     void ChangedField()
     {
-        distance = Vector2.Distance(realL1.transform.position, realL2.transform.position);
+        distance = Math.Abs(realL1.transform.position.y-realL2.transform.position.y);
         MarginBorder.size = new Vector2(MarginBorder.size.x, distance - size1*4.8f);
-        MarginBorder.offset = new Vector2(MarginBorder.offset.x,  - size1*1.1f);
+        MarginBorder.offset = new Vector2(MarginBorder.offset.x,  - size1*1.2f);
     }
 }
 

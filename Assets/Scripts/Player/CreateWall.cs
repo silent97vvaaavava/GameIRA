@@ -209,10 +209,11 @@ public class CreateWall : MonoBehaviour
                 if (Math.Abs(startPos.y-limitOne.transform.position.y) < lengthBorderForBuild)
                 {
 
-                    startPos = new Vector2(startPos.x, startPos.y- lengthBorderForBuild);
+                    startPos = new Vector2(startPos.x, startPos.y- lengthBorderForBuild/2);
                     Debug.Log(lengthBorderForBuild);
                     Debug.Log(Math.Abs(startPos.y - limitOne.transform.position.y));
                 }
+
                 CreateReadyWall();
                 
             }
@@ -228,7 +229,7 @@ public class CreateWall : MonoBehaviour
                // else
                 if (pos.y <= startPos.y + deltaLength && pos.y >= startPos.y - deltaLength * 2)
                 {
-                    GameObject.Find("bottom: " + countTowers).transform.position = new Vector2(startPos.x, startPos.y - deltaLength * 2);
+                    GameObject.Find("bottom: " + countTowers).transform.position = new Vector2(startPos.x, startPos.y - deltaLength * 2); //восстановление расстояния между вехрняй стенкой и нижней 
                     
                 }
                // else
